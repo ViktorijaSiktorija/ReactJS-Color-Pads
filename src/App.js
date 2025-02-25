@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import padsData from './pads';
+import Pad from './Pad';
 
-function App() {
+export default function App() {
+  const [pads, setPads] = React.useState(padsData);
+
+  function toggle(id) {
+    setPads((prev) =>
+      prev.map((item) => {
+        return item.id === id ? { ...item, on: !item.on } : item;
+      })
+    );
+  }
+
+  const buttonElements = pads.map((pad) => (
+    <Pad
+      toggle={toggle}
+      id={pad.id}
+      key={pad.id}
+      color={pad.color}
+      on={pad.on}
+    />
+  ));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <div className="pad-container">{buttonElements}</div>
+    </main>
   );
 }
-
-export default App;
